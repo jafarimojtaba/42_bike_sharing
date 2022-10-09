@@ -108,14 +108,12 @@ class BikeController extends Controller
             $u_bike->available_status = 0;
             $u_bike->hold_by = $user_name['username'];
             $u_bike->save();
-            echo 'booked successfully';
             return $this->redirect(['index']);
 
         } else {
             return $this->render('sorry', [
                 'model' => $this->findModel($id),
             ]);
-            echo 'This bike is taken by another user, please choose other one!';
         }
 //        return $this->render('success');
     }
@@ -140,19 +138,10 @@ class BikeController extends Controller
             $u_bike->pass_next = (string)random_int(1111, 9999);
             $u_bike->hold_by = 'Nobody';
             $u_bike->save();
-
-
-            return $this->redirect(['index']);
-
         }
-        else {
-            echo 'can not return';
-        }
-//      return $this->render('success');
-
+        return $this->redirect(['index']);
     }
-//
-//
+
     /**
      * Creates a new Bike model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -251,10 +240,4 @@ class BikeController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-//    public function actionTest(){
-//        $user = yii::$app->session['__id'];
-//      echo $user;
-//      $bike_id_b = Bike::find()->where(['id'=>25])->one();
-//      echo $bike_id_b->id;
-//    }
 }
