@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="42bs.000webhostapp.com" target="_blank">
+    <a href="https://42bs.000webhostapp.com/" target="_blank">
     <h1 align="center">42 bike sharing system</h1></a>
     <br>
 </p>
