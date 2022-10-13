@@ -11,10 +11,10 @@ use Yii;
  * @property string|null $pass_before
  * @property string|null $pass_now
  * @property string|null $pass_next
- * @property string|null $hold_by
  * @property int|null $available_status
+ * @property string|null $hold_by
  *
- * @property Borrowedbike[] $borrowedbikes
+ * @property BorrowedBike[] $borrowedBikes
  */
 class Bike extends \yii\db\ActiveRecord
 {
@@ -34,7 +34,7 @@ class Bike extends \yii\db\ActiveRecord
         return [
             [['id'], 'required'],
             [['id', 'available_status'], 'integer'],
-            [['pass_before', 'pass_now', 'pass_next', 'hold_by'], 'string', 'max' => 50],
+            [['pass_before', 'pass_now', 'pass_next', 'hold_by'], 'string', 'max' => 80],
             [['id'], 'unique'],
         ];
     }
@@ -45,7 +45,7 @@ class Bike extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'Bike',
+            'id' => 'ID',
             'pass_before' => 'Previous Code',
             'pass_now' => 'Current Code',
             'pass_next' => 'Next Code',
@@ -55,12 +55,12 @@ class Bike extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Borrowedbikes]].
+     * Gets query for [[BorrowedBikes]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getBorrowedbikes()
+    public function getBorrowedBikes()
     {
-        return $this->hasMany(Borrowedbike::class, ['bike_id' => 'id']);
+        return $this->hasMany(BorrowedBike::class, ['bike_id' => 'id']);
     }
 }

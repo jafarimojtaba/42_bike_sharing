@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+//use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var app\models\BikeSearch $searchModel */
@@ -59,7 +60,13 @@ $this->title = '';
     }
     ?>
 
-
+<!--    --><?php //echo Html::img('@web/assets/how_to.png' ) ?>
     <?php Pjax::end(); ?>
-
+    <?= Html::img('@web/assets/how_to.png', ['width' => '100%']);?>
+<!--    <img src="@app/../../assets/how_to.png" alt="How to unlock the code" />-->
 </div>
+<script>
+    setTimeout(function(){
+        window.location.replace("<?php echo '../site/index' ?>");
+    }, 60000);
+</script>

@@ -14,13 +14,15 @@ use Yii;
  * @property string|null $authKey
  * @property string|null $accessToken
  * @property string|null $role
- * @property int $has_booking
+ * @property int|null $has_booking
  *
- * @property Borrowedbike[] $borrowedbikes
+ * @property BorrowedBike[] $borrowedBikes
  */
 class NewUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'new_user';
@@ -33,7 +35,8 @@ class NewUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['username', 'email', 'password'], 'required'],
-            [['username', 'email'], 'string', 'max' => 80],
+            [['has_booking'], 'integer'],
+            [['username', 'email', 'role'], 'string', 'max' => 80],
             [['password', 'authKey', 'accessToken'], 'string', 'max' => 255],
             [['username', 'email'], 'unique'],
         ];
@@ -48,19 +51,21 @@ class NewUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'username' => 'Username',
             'password' => 'Password',
             'email' => 'Email',
+            'role' => 'Role',
+            'has_booking' => 'Has Booking',
+            'authKey' => 'Ac Code'
         ];
     }
 
     /**
-     * Gets query for [[Borrowedbikes]].
+     * Gets query for [[BorrowedBikes]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getBorrowedbikes()
+    public function getBorrowedBikes()
     {
-        return $this->hasMany(Borrowedbike::class, ['user_id' => 'id']);
+        return $this->hasMany(BorrowedBike::class, ['user_id' => 'id']);
     }
-
     public static function findIdentity($id){
         return self::findOne($id);
     }

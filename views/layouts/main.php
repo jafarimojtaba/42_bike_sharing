@@ -1,6 +1,7 @@
 <?php
 
 /** @var yii\web\View $this */
+
 /** @var string $content */
 
 use app\assets\AppAsset;
@@ -36,27 +37,41 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
-    $navItem = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Bikes', 'url' => ['/bike/index']],
-        ['label' => 'Booking logs', 'url' => ['/borrowedbike/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
-    if (Yii::$app->user->isGuest)
+    if (Yii::$app->user->identity && Yii::$app->user->identity->role == "admin")
     {
-        array_push($navItem, ['label' => 'Login', 'url' => ['/site/login']], ['label' => 'Register', 'url' => ['/site/register']]);
+        $navItem = [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Bikes', 'url' => ['/bike/index']],
+            ['label' => 'Booking logs', 'url' => ['/borrowed-bike/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Users', 'url' => ['/new-user/index']],
+            ['label' => 'AC Code', 'url' => ['/activation-code/index']],
+        ];
     }
-    else{
-        array_push($navItem, 
-        '<li class="nav-item">'
-        . Html::beginForm(['/site/logout'])
-        . Html::submitButton(
-            'Logout (' . Yii::$app->user->identity->username . ')',
-            ['class' => 'nav-link btn btn-link logout']
-        )
-        . Html::endForm()
-        . '</li>');
+    else
+    {
+        $navItem = [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Bikes', 'url' => ['/bike/index']],
+            ['label' => 'Booking logs', 'url' => ['/borrowed-bike/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Contact', 'url' => ['/site/contact']],
+        ];
+    }
+
+    if (Yii::$app->user->isGuest) {
+        array_push($navItem, ['label' => 'Login', 'url' => ['/site/login']], ['label' => 'Register', 'url' => ['/site/register']]);
+    } else {
+        $navItem[] = '<li class="nav-item">'
+            . Html::beginForm(['/site/logout'])
+            . Html::submitButton(
+                'Logout (' . Yii::$app->user->identity->username . ')',
+//                'Logout (' . Yii::$app->user->identity->role . ')',
+                ['class' => 'nav-link btn btn-link logout']
+            )
+            . Html::endForm()
+            . '</li>';
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],

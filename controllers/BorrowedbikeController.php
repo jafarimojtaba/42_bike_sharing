@@ -2,16 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\Borrowedbike;
-use app\models\BorrowedbikeSearch;
+use app\models\BorrowedBike;
+use app\models\BorrowedBikeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BorrowedbikeController implements the CRUD actions for Borrowedbike model.
+ * BorrowedBikeController implements the CRUD actions for BorrowedBike model.
  */
-class BorrowedbikeController extends Controller
+class BorrowedBikeController extends Controller
 {
     /**
      * @inheritDoc
@@ -32,13 +32,13 @@ class BorrowedbikeController extends Controller
     }
 
     /**
-     * Lists all Borrowedbike models.
+     * Lists all BorrowedBike models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new BorrowedbikeSearch();
+        $searchModel = new BorrowedBikeSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +48,7 @@ class BorrowedbikeController extends Controller
     }
 
     /**
-     * Displays a single Borrowedbike model.
+     * Displays a single BorrowedBike model.
      * @param int $id
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,15 +59,15 @@ class BorrowedbikeController extends Controller
 //            'model' => $this->findModel($id),
 //        ]);
 //    }
-
-    /**
-     * Creates a new Borrowedbike model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
+//
+//    /**
+//     * Creates a new BorrowedBike model.
+//     * If creation is successful, the browser will be redirected to the 'view' page.
+//     * @return string|\yii\web\Response
+//     */
 //    public function actionCreate()
 //    {
-//        $model = new Borrowedbike();
+//        $model = new BorrowedBike();
 //
 //        if ($this->request->isPost) {
 //            if ($model->load($this->request->post()) && $model->save()) {
@@ -81,14 +81,14 @@ class BorrowedbikeController extends Controller
 //            'model' => $model,
 //        ]);
 //    }
-
-    /**
-     * Updates an existing Borrowedbike model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+//
+//    /**
+//     * Updates an existing BorrowedBike model.
+//     * If update is successful, the browser will be redirected to the 'view' page.
+//     * @param int $id
+//     * @return string|\yii\web\Response
+//     * @throws NotFoundHttpException if the model cannot be found
+//     */
 //    public function actionUpdate($id)
 //    {
 //        $model = $this->findModel($id);
@@ -101,14 +101,14 @@ class BorrowedbikeController extends Controller
 //            'model' => $model,
 //        ]);
 //    }
-
-    /**
-     * Deletes an existing Borrowedbike model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+//
+//    /**
+//     * Deletes an existing BorrowedBike model.
+//     * If deletion is successful, the browser will be redirected to the 'index' page.
+//     * @param int $id
+//     * @return \yii\web\Response
+//     * @throws NotFoundHttpException if the model cannot be found
+//     */
 //    public function actionDelete($id)
 //    {
 //        $this->findModel($id)->delete();
@@ -117,15 +117,15 @@ class BorrowedbikeController extends Controller
 //    }
 
     /**
-     * Finds the Borrowedbike model based on its primary key value.
+     * Finds the BorrowedBike model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id
-     * @return Borrowedbike the loaded model
+     * @return BorrowedBike the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Borrowedbike::findOne(['id' => $id])) !== null) {
+        if (($model = BorrowedBike::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

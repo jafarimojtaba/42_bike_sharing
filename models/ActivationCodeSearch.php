@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\BorrowedBike;
+use app\models\ActivationCode;
 
 /**
- * BorrowedBikeSearch represents the model behind the search form of `app\models\BorrowedBike`.
+ * ActivationCodeSearch represents the model behind the search form of `app\models\ActivationCode`.
  */
-class BorrowedBikeSearch extends BorrowedBike
+class ActivationCodeSearch extends ActivationCode
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class BorrowedBikeSearch extends BorrowedBike
     public function rules()
     {
         return [
-            [['id', 'user_id', 'bike_id'], 'integer'],
-            [['date_borrowed', 'date_returned', 'username'], 'safe'],
+            [['id', 'sent_code'], 'integer'],
+            [['email', 'intraname'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class BorrowedBikeSearch extends BorrowedBike
      */
     public function search($params)
     {
-        $query = BorrowedBike::find();
+        $query = ActivationCode::find();
 
         // add conditions that should always apply here
 
@@ -59,13 +59,11 @@ class BorrowedBikeSearch extends BorrowedBike
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'bike_id' => $this->bike_id,
-            'date_borrowed' => $this->date_borrowed,
-            'date_returned' => $this->date_returned,
+            'sent_code' => $this->sent_code,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username]);
+        $query->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'intraname', $this->intraname]);
 
         return $dataProvider;
     }

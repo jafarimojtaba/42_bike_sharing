@@ -14,5 +14,5 @@ $this->title = 'Contact';
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
     <p>if you have any problem please contact SC at 42 wolfsburg</p>
-    
+
 </div>

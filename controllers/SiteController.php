@@ -129,20 +129,30 @@ class SiteController extends Controller
 
     public function actionRegister()
     {
+        $db = \Yii::$app->db;
         $model = new NewUser;
         $domains = array('42wolfsburg.de');
         $pattern = "/^[a-z0-9._%+-]+@[a-z0-9.-]*(" . implode('|', $domains) . ")$/i";
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
+
                 // form inputs are valid, do something here
-                $model->username = $_POST['NewUser']['username'];
-                $model->email = $_POST['NewUser']['email'];
+                $username = $_POST['NewUser']['username'];
+                $model->username = $username;
+                $email1 = $_POST['NewUser']['email'];
+                $model->email = $email1;
                 $model->password = password_hash($_POST['NewUser']['password'], PASSWORD_ARGON2I);
+                $received_code = $_POST['NewUser']['authKey'];
                 $model->authKey = md5(random_bytes(5));
                 $model->accessToken = password_hash(random_bytes(10), PASSWORD_DEFAULT);
                 $val = preg_match($pattern, $model->email);
-                if ($val && $model->save()) {
+                if (!ctype_digit($received_code)) {
+                    return $this->render('sorry');;
+                }
+                $ac_code = $db->createCommand("SELECT * FROM activation_code WHERE sent_code=$received_code")->queryOne();
+                if ($val && $received_code && $ac_code && $ac_code['sent_code'] == $received_code
+                    && $ac_code['email'] == $email1  && $ac_code['intraname'] == $username && $model->save()) {
                     return $this->redirect(['login']);
                 } else
                     return $this->render('sorry');
@@ -155,9 +165,45 @@ class SiteController extends Controller
         ]);
     }
 
+
+    public function actionActivation()
+    {
+        $subject = 'Activation code form 42 Bike Sharing (RIDE IT)';
+        $headers = 'From: mjafari@students.42wolfsburg.de'       . "\r\n" .
+            'Reply-To: mjafari@students.42wolfsburg.de' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+
+        $domains = array('42wolfsburg.de');
+        $pattern = "/^[a-z0-9._%+-]+@[a-z0-9.-]*(" . implode('|', $domains) . ")$/i";
+
+        $model = new \app\models\ActivationCode();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                $model->email = $_POST['ActivationCode']['email'];
+                $model->sent_code = random_int(100000, 999999);
+                $message = 'Hello Dear User'. "\r\n". "\r\n". 'Please use the following code to register on bike sharing system!' ."\r\n"."\r\n".'Activation code: ' .
+                    $model->sent_code .
+                "\r\n"."\r\n".'Thanks for using our website!'."\r\n";
+                $val = preg_match($pattern, $model->email);
+                // form inputs are valid, do something here
+                if ($val && $model->save()) {
+                    mail($model->email, $subject, $message, $headers);
+                    return $this->redirect(['register']);
+                } else
+                    return $this->render('sorry');
+            }
+        }
+
+        return $this->render('activation', [
+            'model' => $model,
+        ]);
+    }
+
+
     public function actionAvailable()
     {
-        $model = new \app\models\Borrowedbike();
+        $model = new \app\models\BorrowedBike();
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {

@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\BikeSearch $model */
+/** @var app\models\NewUserSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="bike-search">
+<div class="new-user-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -20,13 +20,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'pass_before') ?>
+    <?= $form->field($model, 'username') ?>
 
-    <?= $form->field($model, 'pass_now') ?>
+    <?= $form->field($model, 'password') ?>
 
-    <?= $form->field($model, 'available_status') ?>
+    <?= $form->field($model, 'email') ?>
 
-    <?= $form->field($model, 'hold_by') ?>
+    <?= $form->field($model, 'authKey') ?>
+
+    <?php // echo $form->field($model, 'accessToken') ?>
+
+    <?php // echo $form->field($model, 'role') ?>
+
+    <?php // echo $form->field($model, 'has_booking') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

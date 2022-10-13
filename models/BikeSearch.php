@@ -18,7 +18,7 @@ class BikeSearch extends Bike
     {
         return [
             [['id', 'available_status'], 'integer'],
-            [['pass_before', 'pass_now', 'hold_by'], 'safe'],
+            [['pass_before', 'pass_now', 'pass_next', 'hold_by'], 'safe'],
         ];
     }
 
@@ -64,7 +64,8 @@ class BikeSearch extends Bike
 
         $query->andFilterWhere(['like', 'pass_before', $this->pass_before])
             ->andFilterWhere(['like', 'pass_now', $this->pass_now])
-        ->andFilterWhere(['like', 'hold_by', $this->hold_by]);
+            ->andFilterWhere(['like', 'pass_next', $this->pass_next])
+            ->andFilterWhere(['like', 'hold_by', $this->hold_by]);
 
         return $dataProvider;
     }

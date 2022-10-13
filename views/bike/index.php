@@ -93,9 +93,10 @@ $this->title = 'Bikes';
                 'pass_before',
                 'pass_now',
                 'available_status',
+                'hold_by',
                 [
                     'class' => ActionColumn::className(),
-                    'template' => '{view} {update} {delete} {book}',
+                    'template' => '{view} {update} {book}',
                     'buttons' => [
                         'book' => function ($action, Bike $model, $key) {
                             if ($model->available_status == '0')
@@ -110,6 +111,8 @@ $this->title = 'Bikes';
             ],
         ]);
     } else {
+        echo
+        "<h1>To use the booking system you need to login!</h1>";
         echo
         Html::a('Login', ['../site/login']);
 

@@ -4,11 +4,9 @@ namespace app\controllers;
 
 use yii;
 use yii\db\Exception;
-use yii\db\Expression;
 use app\models\Bike;
 use app\models\BikeSearch;
-use app\models\NewUser;
-use app\models\Borrowedbike;
+use app\models\BorrowedBike;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -57,7 +55,7 @@ class BikeController extends Controller
         $searchModel = new BikeSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         if ($borrowed['has_booking'] != 0) {
-            $model1 = $db->createCommand("SELECT bike_id FROM borrowedbike WHERE user_id=$user_id AND date_returned IS NULL")->queryOne();
+            $model1 = $db->createCommand("SELECT bike_id FROM borrowed_bike WHERE user_id=$user_id AND date_returned IS NULL")->queryOne();
 
             $dataProvider->query->andWhere(['id' => $model1['bike_id']]);
 
@@ -84,6 +82,15 @@ class BikeController extends Controller
      */
     public function actionView($id)
     {
+        $db = \Yii::$app->db;
+        $user_id = yii::$app->session['__id'];
+        if ($user_id)
+            $role = $db->createCommand("SELECT role FROM new_user WHERE id=$user_id")->queryOne();
+        else
+            $role['role'] = "guest";
+        if ($role['role'] != "admin") {
+            return $this->actionIndex();
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -91,9 +98,20 @@ class BikeController extends Controller
 
     public function actionBook($id)
     {
+        $db = \Yii::$app->db;
+        $user_id = yii::$app->session['__id'];
+        if ($user_id)
+            $role = $db->createCommand("SELECT role FROM new_user WHERE id=$user_id")->queryOne();
+        else
+            $role['role'] = "guest";
+        if ($role['role'] == "guest") {
+            return $this->actionIndex();
+        }
         $u_bike = $this->findModel($id);
         $user_id = yii::$app->session['__id'];
-        if ($u_bike->available_status && $user_id) {
+        $has_booking = \Yii::$app->db->createCommand("SELECT has_booking FROM new_user WHERE id=$user_id")->queryOne();
+
+        if ($u_bike->available_status && $user_id && !($has_booking['has_booking'])) {
             \Yii::$app->db->createCommand()
                 ->update('new_user', ['has_booking' => 1], 'id =:user_id')->bindValue(':user_id', $user_id)
                 ->execute();
@@ -106,6 +124,7 @@ class BikeController extends Controller
             $b_bike->username = $user_name['username'];
             $b_bike->save();
             $u_bike->available_status = 0;
+            $u_bike->pass_next = (string)random_int(1111, 9999);
             $u_bike->hold_by = $user_name['username'];
             $u_bike->save();
             return $this->redirect(['index']);
@@ -121,15 +140,24 @@ class BikeController extends Controller
 
     public function actionReturn($id)
     {
+        $db = \Yii::$app->db;
+        $user_id = yii::$app->session['__id'];
+        if ($user_id)
+            $role = $db->createCommand("SELECT role FROM new_user WHERE id=$user_id")->queryOne();
+        else
+            $role['role'] = "guest";
+        if ($role['role'] == "guest") {
+            return $this->actionIndex();
+        }
         $u_bike = $this->findModel($id);
         $user_id = yii::$app->session['__id'];
-        if ($u_bike->available_status == 0 && $user_id) {
+        $bbid = \Yii::$app->db->createCommand("SELECT id FROM borrowed_bike WHERE user_id=$user_id AND date_returned IS NULL")->queryOne();
+        if ($u_bike->available_status == 0 && $user_id && $bbid) {
             \Yii::$app->db->createCommand()
                 ->update('new_user', ['has_booking' => 0], 'id =:user_id')->bindValue(':user_id', $user_id)
                 ->execute();
 
-            $bbid = \Yii::$app->db->createCommand("SELECT id FROM borrowedbike WHERE user_id=$user_id AND date_returned IS NULL")->queryOne();
-            $b_bike = Borrowedbike::findOne($bbid['id']);
+            $b_bike = BorrowedBike::findOne($bbid['id']);
             $b_bike->date_returned = date('Y-m-d h:i:s');
             $b_bike->save();
             $u_bike->available_status = 1;

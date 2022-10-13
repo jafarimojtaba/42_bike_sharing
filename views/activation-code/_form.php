@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\Bike $model */
+/** @var app\models\ActivationCode $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="bike-form">
+<div class="activation-code-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
+    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'pass_now')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'intraname')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'available_status')->dropDownList(array('0'=>'No', '1'=>'Yes')) ?>
+    <?= $form->field($model, 'sent_code')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

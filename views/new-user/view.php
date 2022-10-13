@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var app\models\Bike $model */
+/** @var app\models\NewUser $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Bikes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'New Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="bike-view">
+<div class="new-user-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,10 +29,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'pass_before',
-            'pass_now',
-            'available_status',
+//            'id',
+            'username',
+//            'password',
+            'email:email',
+//            'authKey',
+//            'accessToken',
+            'role',
+            'has_booking',
         ],
     ]) ?>
 

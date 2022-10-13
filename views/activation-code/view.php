@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var app\models\Bike $model */
+/** @var app\models\ActivationCode $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Bikes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Activation Codes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="bike-view">
+<div class="activation-code-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,11 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'pass_before',
-            'pass_now',
-            'pass_next',
-            'available_status',
-            'hold_by',
+            'email:email',
+            'intraname',
+            'sent_code',
         ],
     ]) ?>
 

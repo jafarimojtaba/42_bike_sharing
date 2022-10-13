@@ -1,9 +1,6 @@
 <?php
 
-use app\models\Borrowedbike;
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
@@ -12,9 +9,8 @@ use yii\widgets\Pjax;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Booking Logs';
-//$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="borrowedbike-index">
+<div class="borrowed-bike-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -26,10 +22,6 @@ $this->title = 'Booking Logs';
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-//            [
-//                'attribute'=>'user_id',
-//                'value'=>'user.username',
-//            ],
             'username',
             'bike_id',
             'date_borrowed',
@@ -42,15 +34,6 @@ $this->title = 'Booking Logs';
                         return ($model->date_returned);
                 }
             ],
-//            'date_returned',
-
-//            [
-//                'class' => ActionColumn::className(),
-//                'template' => '{delete}',
-//                'urlCreator' => function ($action, Borrowedbike $model, $key, $index, $column) {
-//                    return Url::toRoute([$action, 'id' => $model->id]);
-//                 }
-//            ],
         ],
     ]); ?>
 

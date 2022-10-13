@@ -11,7 +11,10 @@ $this->title = 'Register';
 ?>
 <div class="site-register">
     <h1><?php echo Html::encode($this->title) ?></h1>
-    
+    <p>
+        If you don't have an activation code take one <a href="activation">Here</a>!
+    </p>
+
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
         'layout' => 'horizontal',
@@ -23,13 +26,14 @@ $this->title = 'Register';
         ],
     ]); ?>
 
-        <?= $form->field($model, 'username')->textInput() ?>
-        <?= $form->field($model, 'email')->textInput() ?>
-        <?= $form->field($model, 'password')->passwordInput() ?>
+    <?= $form->field($model, 'username')->textInput() ?>
+    <?= $form->field($model, 'email')->textInput() ?>
+    <?= $form->field($model, 'authKey')->textInput() ?>
+    <?= $form->field($model, 'password')->passwordInput() ?>
 
-        <div class="form-group">
-            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
-        </div>
+    <div class="form-group">
+        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div><!-- site-register -->
